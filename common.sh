@@ -23,9 +23,9 @@
 #  booleanIsTrue "true" && echo "true" || echo "false"  # true
 #  booleanIsTrue "yes" && echo "true" || echo "false"   # false
 #***
-booleanIsTrue(){
-    case $1 in
-       [Tt][Rr][Uu][Ee]) return 0 ;;
-       *) return 1 ;;
-    esac
+function booleanIsTrue {
+   case $1 in
+      [Tt][Rr][Uu][Ee]) return 0 ;;
+      *) return 1 ;;
+   esac
 }

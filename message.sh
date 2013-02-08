@@ -24,7 +24,7 @@ NORMAL='\033[0m'
 # DESCRIPTION
 #  Shows the message prefixed with a green asterisk.
 #***
-function msgOk() {
+function msgOk {
    local msg=${1}
    echo -e " ${GOOD}*${NORMAL} ${msg}"
 }
@@ -33,7 +33,7 @@ function msgOk() {
 # DESCRIPTION
 #  Shows the message prefixed with a red asterisk.
 #***
-function msgError() {
+function msgError {
    local msg=${1}
    echo -e " ${BAD}*${NORMAL} ${msg}"
 }
@@ -42,7 +42,7 @@ function msgError() {
 # DESCRIPTION
 #  Shows the message prefixed with a yellow asterisk.
 #***
-function msgWarning() {
+function msgWarning {
    local msg=${1}
    echo -e " ${WARN}*${NORMAL} ${msg}"
 }
