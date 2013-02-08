@@ -74,9 +74,7 @@ function sqlImport {
          [ ! -z ${user} ] && user="-U ${user}"
          psql -h ${host} ${user} -d ${name} < ${input} > ${output} 2>&1 ;;
       "sqlite")
-         while read query; do
-            sqlite3 ${name} "${query}" > ${output} 2>&1
-         done < ${input} ;;
+         cat ${input} | sqlite3 ${name} > ${output} 2>&1 ;;
       *)
          msgError "database type not recognized: ${type}" && exit 1
    esac
