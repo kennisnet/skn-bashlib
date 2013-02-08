@@ -1,0 +1,6 @@
+indentation: 3 spaces
+global vars: capitalize
+local vars: lowerCamelCase, define with "local"
+function names: lowerCamelCase
+opening/closing: short form
+comments: ROBODoc (http://rfsber.home.xs4all.nl/Robo/robodoc.html)
