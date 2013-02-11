@@ -29,3 +29,17 @@ function booleanIsTrue {
       *) return 1 ;;
    esac
 }
+
+#****f* common/requiredVar
+# DESCRIPTION
+#  Shorthand function to check a required variable in a
+#  function. Exists with 1 and an error message if the 
+#  variable not present.
+#***
+function requiredVar {
+   local var=${1}
+   local msg=${2}
+
+   [ -z "${msg}" ] && msg="missing required variable"
+   [ -z "${var}" ] && msgError "${msg}" && exit 1
+}
