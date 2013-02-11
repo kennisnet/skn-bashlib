@@ -43,3 +43,29 @@ function requiredVar {
    [ -z "${msg}" ] && msg="missing required variable"
    [ -z "${var}" ] && msgError "${msg}" && exit 1
 }
+
+#****f* common/requiredArgs
+# DESCRIPTION
+#  Shorthand function to check if the number of arguments
+#  for a function is at least the number specified.
+#***
+function requiredArgs {
+   local curNr=${1}
+   local reqNr=${2}
+   local name=${3}
+
+   [ "${curNr}" -lt "${reqNr}" ] && msgError "${name}: requires at least ${reqNr} arguments" && exit 1
+}
+
+#****f* common/setOrDefault
+# DESCRIPTION
+#  Shorthand function to either set the input var if not
+#  empty, or set the default value.
+#***
+function setOrDefault {
+   local var=${1}
+   local default=${2}
+
+   [ -z "${var}" ] && var="${default}"
+   echo "${var}"
+}

@@ -21,12 +21,10 @@
 #  output. When output not defined, retrieves to stdout.
 #***
 function urlRetrieve {
+   requiredArgs $# 1 $FUNCNAME
    local url=${1}
-   local output=${2}
+   local output=$(setOrDefault "${2}" "/dev/stdout")
 
-   # checks
-   requiredVar "${url}" "function requires a url"
-   [ -z ${output} ] && output="/dev/stdout"
-
+   requiredVar "${url}" "$FUNCNAME: function requires a url"
    curl -s -o "${output}" "${url}"
 }

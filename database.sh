@@ -21,7 +21,7 @@
 #  the query and executes it with sqlImport.
 #***
 function sqlQuery {
-   [ "$#" -lt "7" ] && msgError "sqlQuery requires at least 7 arguments" && exit 1
+   requiredArgs $# 7 $FUNCNAME
    local type=${1}
    local query=${2}
    local output=${3}
@@ -32,8 +32,8 @@ function sqlQuery {
    local remove="true"
 
    # checks
-   [ -z ${type} ] && msgError "provide a database type" && exit 1
-   [ -z "${query}" ] && msgError "query should not be empty" && exit 1
+   requiredVar "${type}" "$FUNCNAME: provide a database type"
+   requiredVar "${query}" "$FUNCNAME: query should not be empty"
 
    local queryfile=$(mktemp)
    echo ${query} > ${queryfile}
@@ -45,24 +45,22 @@ function sqlQuery {
 #  Executes an sql file.
 #***
 function sqlImport {
-   [ "$#" -lt "7" ] && msgError "sqlImport requires at least 7 arguments" && exit 1
+   requiredArgs $# 7 $FUNCNAME
    local type=${1}
    local input=${2}
    local output=${3}
-   local host=${4}
+   local host=$(setOrDefault "${4}" "localhost")
    local user=${5}
    local password=${6}
    local name=${7}
-   local remove=${8}
+   local remove=$(setOrDefault "${8}" "false")
 
    # checks and defaults
-   [ -z ${type} ] && msgError "provide a database type" && exit 1
+   requiredVar "${type}" "$FUNCNAME: provide a database type"
    [ ! -r ${input} ] && msgError "input file not readable: ${input}" && exit 1
    [ -z ${output} ] && msgWarning "no output file defined, using /dev/null" && output="/dev/null"
    [ ! -w ${output} ] && msgError "output file not writeable: ${output}" && exit 1
-   [ -z ${host} ] && host="localhost"
-   [ -z ${name} ] && msgError "a database name is required" && exit 1
-   [ -z ${remove} ] && remove="false"
+   requiredVar "${name}" "$FUNCNAME: a database name is required"
 
    case ${type} in
       "mysql")
