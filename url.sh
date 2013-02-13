@@ -26,5 +26,6 @@ function urlRetrieve {
    local output=$(setOrDefault "${2}" "/dev/stdout")
 
    requiredVar "${url}" "$FUNCNAME: function requires a url"
+   requiredWrite "${output}" "$FUNCNAME: output file not writable: ${output}"
    curl -s -o "${output}" "${url}"
 }

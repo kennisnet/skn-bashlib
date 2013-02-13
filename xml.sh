@@ -33,6 +33,7 @@ function xslTranslate {
 
    # checks
    requiredVar "${xsl}" "$FUNCNAME: provide an xslt file"
+   requiredWrite "${target}" "$FUNCNAME: output file not writable: ${target}"
 
    # create the stringparams
    if [ ! -z ${params} ]; then

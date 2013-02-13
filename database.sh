@@ -59,7 +59,7 @@ function sqlImport {
    requiredVar "${type}" "$FUNCNAME: provide a database type"
    [ ! -r ${input} ] && msgError "input file not readable: ${input}" && exit 1
    [ -z ${output} ] && msgWarning "no output file defined, using /dev/null" && output="/dev/null"
-   [ ! -w ${output} ] && msgError "output file not writeable: ${output}" && exit 1
+   requiredWrite "${output}" "$FUNCNAME: output file not writable: ${output}"
    requiredVar "${name}" "$FUNCNAME: a database name is required"
 
    case ${type} in
@@ -98,7 +98,7 @@ function sqlDump {
    requiredVar "${type}" "$FUNCNAME: provide a database type"
    requiredVar "${name}" "$FUNCNAME: a database name is required"
    requiredVar "${output}" "$FUNCNAME: dumping requires an output file"
-   [ ! -w ${output} ] && msgError "output file not writeable: ${output}" && exit 1
+   requiredWrite "${output}" "$FUNCNAME: output file not writable: ${output}"
 
    case ${zip} in
       "gz")
