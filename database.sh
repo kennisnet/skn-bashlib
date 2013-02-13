@@ -77,5 +77,53 @@ function sqlImport {
          msgError "database type not recognized: ${type}" && exit 1
    esac
 
-   booleanIsTrue "${remove}" && rm ${input}
+!1   booleanIsTrue "${remove}" && rm ${input}
+}
+
+#****f* database/sqlDump
+# DESCRIPTION
+#  Dumps an entire database into an SQL file
+#***
+function sqlDump {
+   requiredArgs $# 6 $FUNCNAME
+   local type=${1}
+   local output=${2}
+   local host=$(setOrDefault "${3}" "localhost")
+   local user=${4}
+   local password=${5}
+   local name=${6}
+   local zip=$(setOrDefault "${7}" "")
+   local ext=""
+
+   requiredVar "${type}" "$FUNCNAME: provide a database type"
+   requiredVar "${name}" "$FUNCNAME: a database name is required"
+   requiredVar "${output}" "$FUNCNAME: dumping requires an output file"
+   [ ! -w ${output} ] && msgError "output file not writeable: ${output}" && exit 1
+
+   case ${zip} in
+      "gz")
+         local zip="| gzip "
+         local ext=".gz";;
+      "bz")
+         local zip="| bzip2 "
+         local ext=".bz";;
+      "xz")
+         local zip="| xz "
+         local ext=".xz";;
+   esac
+
+   case ${type} in
+      "mysql")
+         [ ! -z ${user} ] && user="-u${user}"
+         [ ! -z ${password} ] && password="-p{password}"
+         mysqldump -h${host} ${user} ${password} ${name} ${zip}> ${output}${ext} 2>&1 ;;
+      "postgresql")
+         [ ! -z ${user} ] && user="-U ${user}"
+         [ ! -z ${password} ] && password="-W{password}"
+         pg_dump -h ${host} ${user} ${password} ${name} ${zip} > ${output}${ext} 2>&1 ;;
+      "sqlite")
+         sqlite3 ${name} .dump ${zip}> ${output}${ext} 2>&1 ;;
+      *)
+         msgError "database type not recognized: ${type}" && exit 1
+   esac
 }
