@@ -77,7 +77,7 @@ function sqlImport {
          msgError "database type not recognized: ${type}" && exit 1
    esac
 
-!1   booleanIsTrue "${remove}" && rm ${input}
+   booleanIsTrue "${remove}" && rm ${input}
 }
 
 #****f* database/sqlDump
@@ -120,7 +120,7 @@ function sqlDump {
       "postgresql")
          [ ! -z ${user} ] && user="-U ${user}"
          [ ! -z ${password} ] && password="-W{password}"
-         pg_dump -h ${host} ${user} ${password} ${name} ${zip} > ${output}${ext} 2>&1 ;;
+         pg_dump -h ${host} ${user} ${password} ${name} ${zip}> ${output}${ext} 2>&1 ;;
       "sqlite")
          sqlite3 ${name} .dump ${zip}> ${output}${ext} 2>&1 ;;
       *)
