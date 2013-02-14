@@ -20,6 +20,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#****f* common/checkBoolean
+# DESCRIPTION
+#  Returns a logical true if the variable is a string "true"
+#  in any upper- or lowercase combination.
+# EXAMPLE
+#  checkBoolean "true" && echo "true" || echo "false"  # true
+#  checkBoolean "yes" && echo "true" || echo "false"   # false
+#***
+function checkBoolean {
+   case $1 in
+      [Tt][Rr][Uu][Ee]) return 0 ;;
+      *) return 1 ;;
+   esac
+}
+
 #****f* validation/checkUuid
 # DESCRIPTION
 #  Returns true when valid uuid, else false.
