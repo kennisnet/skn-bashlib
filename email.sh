@@ -25,7 +25,7 @@ function mailSend {
    local subject=${1}
    local mailto=${2}
    local message=${3}
-   local attach=$(setOrDefault "${4}" ""
+   local attach=$(setOrDefault "${4}" "")
 
    requiredVar "${subject}" "$FUNCNAME: Provide a subject"
    requiredVar "${mailto}" "$FUNCNAME: Mails need a receiver."
@@ -38,6 +38,6 @@ function mailSend {
    elif [ ! -r ${message} ]; then
       mail -s "$subject" "$mailto" "${attach}" < ${message} 2>&1
    else
-      msgError "input fole not readable: ${message}" && exit 1
+      msgError "input file not readable: ${message}" && exit 1
    fi
 }
