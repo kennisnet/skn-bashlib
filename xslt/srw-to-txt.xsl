@@ -23,6 +23,12 @@ extracts parts from the SRW response as text
                 <xsl:text>&#xA;</xsl:text>
             </xsl:for-each>
          </xsl:when>
+         <xsl:when test="$data='maximumrecords'">
+            <xsl:value-of select="/srw:searchRetrieveResponse/srw:echoedSearchRetrieveRequest/srw:maximumRecords"/>
+         </xsl:when>
+         <xsl:when test="$data='startrecord'">
+            <xsl:value-of select="/srw:searchRetrieveResponse/srw:echoedSearchRetrieveRequest/srw:startRecord"/>
+         </xsl:when>
          <!-- diagnostic -->
          <xsl:when test="$data='diagnostic-uri'">
             <xsl:value-of select="//diag:diagnostic/diag:uri"/>

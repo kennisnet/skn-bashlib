@@ -10,10 +10,13 @@ extracts parts from the SRW response as xml
    xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/">
    <xsl:output method="xml" omit-xml-declaration="no"/>
    <xsl:param name="data"/>
+   <xsl:param name="identifier"/>
 
    <xsl:template match="/">
       <xsl:choose>
-         <!-- regular responses -->
+         <xsl:when test="$data='recorddata'">
+            <xsl:copy-of select="/srw:searchRetrieveResponse/srw:records/srw:record[srw:recordIdentifier=$identifier]/srw:recordData/node()"/>
+         </xsl:when>
          <xsl:when test="$data='extraresponsedata'">
             <xsl:copy-of select="/srw:searchRetrieveResponse/srw:extraResponseData/node()"/>
          </xsl:when>

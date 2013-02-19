@@ -41,7 +41,8 @@ function xslTranslate {
       if [ ! -z $(echo "${params}" | grep ":") ]; then
          for p in $(echo ${params} | tr "|" "\n"); do
             key=$(echo ${p} | cut -d ':' -f1)
-            val=$(echo ${p} | cut -d ':' -f2)
+            keylen=$(( ${#key} + 1 ))
+            val=${p:keylen}
             strParams="${strParams} --stringparam ${key} ${val}"
          done
       else
