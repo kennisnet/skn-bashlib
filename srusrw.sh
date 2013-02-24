@@ -54,7 +54,8 @@ function srusrwGetRecords {
    urlRetrieve "${query}" ${result}
 
    for identifier in $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:identifiers" ${result}); do
-      xslTranslate ${SKNLIB_DIR}/xslt/srw-to-xml.xsl "data:recorddata|identifier:${identifier}" ${result} "${destDir}/${identifier}.xml"
+      filename=$(echo ${identifier} | sed s/\\//:/g)
+      xslTranslate ${SKNLIB_DIR}/xslt/srw-to-xml.xsl "data:recorddata|identifier:${identifier}" ${result} "${destDir}/${filename}.xml"
    done
 
    rm ${result}
