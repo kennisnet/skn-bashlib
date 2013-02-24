@@ -31,7 +31,7 @@ function mailSend {
    requiredVar "${mailto}" "$FUNCNAME: Mails need a receiver."
    requiredVar "${message}" "$FUNCNAME: Mails should not be empty. Supply input file or text output"
 
-   if [ -r ${attach} ] && attach="-a ${attach}"
+   [ -r ${attach} ] && attach="-a ${attach}"
 
    if [[ ! ${message} =~ ^/|\./(.*) ]]; then
       echo "${message}" | mail -s "${subject}" "${attach}" "${mailto}" 2>&1
