@@ -41,10 +41,14 @@ function srusrwGetRecordIdentifiers {
 #****f* srusrw/getRecords
 # DESCRIPTION
 #  Retrieves all records from one SRU/SRW response.
+#  When relevancy is true, the original order is kept
+#  in order of time (ls -tr).
 #***
 function srusrwGetRecords {
+   requiredArgs $# 2 $FUNCNAME
    local query=${1}
    local destDir=${2}
+   local relevancy=${3}
    local result=$(mktemp)
 
    requiredVar "${query}" "$FUNCNAME: provide a query"
@@ -56,6 +60,7 @@ function srusrwGetRecords {
    for identifier in $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:identifiers" ${result}); do
       filename=$(echo ${identifier} | sed s/\\//:/g)
       xslTranslate ${SKNLIB_DIR}/xslt/srw-to-xml.xsl "data:recorddata|identifier:${identifier}" ${result} "${destDir}/${filename}.xml"
+	  checkBoolean ${relevancy} && sleep 1
    done
 
    rm ${result}
