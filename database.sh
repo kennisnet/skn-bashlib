@@ -77,7 +77,7 @@ function sqlImport {
          msgError "database type not recognized: ${type}" && exit 1
    esac
 
-   checkBoolean "${remove}" && rm ${input}
+   checkTrue "${remove}" && rm ${input}
 }
 
 #****f* database/sqlDump
