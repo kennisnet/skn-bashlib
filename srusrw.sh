@@ -60,7 +60,7 @@ function srusrwGetRecords {
    for identifier in $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:identifiers" ${result}); do
       filename=$(echo ${identifier} | sed s/\\//:/g)
       xslTranslate ${SKNLIB_DIR}/xslt/srw-to-xml.xsl "data:recorddata|identifier:${identifier}" ${result} "${destDir}/${filename}.xml"
-	  checkTrue ${relevancy} && sleep 1
+      checkTrue ${relevancy} && sleep 1
    done
 
    rm ${result}
@@ -91,4 +91,66 @@ function srusrwHarvestData {
       startRecord=$(( ${startRecord} + ${maxRecords} ))
       query="$(echo ${query} | sed 's/&startRecord=[0-9]*//')&startRecord=${startRecord}"
    done
+}
+
+#****f* srusrw/updateRecord
+# DESCRIPTION
+#  Updates the provided record from the
+#  endpoint.
+#***
+function srusrwUpdateRecord {
+   requiredArgs $# 4 $FUNCNAME
+   local record=${1}
+   local endpoint=${2}
+   local identifier=${3}
+   local recordSchema=${4}
+   local updateXml=$(mktemp)
+   local curlResult=$(mktemp)
+
+   xslTranslate ${SKNLIB_DIR}/xslt/srw-update.xsl "action:update|identifier:${identifier}|recordschema:${recordSchema}" ${record} ${updateXml}
+   # not using urlRetrieve, doesn't support POST data
+   curl --silent -o ${curlResult} --data-binary "@${updateXml}" ${endpoint}
+   rm ${updateXml}
+   srusrwUpdateResponseCheck ${curlResult} ${identifier} "updated"
+}
+
+#****f* srusrw/deleteRecord
+# DESCRIPTION
+#  Deletes the provided upload identifier
+#  from the endpoint.
+#***
+function srusrwDeleteRecord {
+   requiredArgs $# 2 $FUNCNAME
+   local endpoint=${1}
+   local identifier=${2}
+   local updateXml=$(mktemp)
+   local curlResult=$(mktemp)
+
+   # call to itself, the delete doen't need an input xml
+   xslTranslate ${SKNLIB_DIR}/xslt/srw-update.xsl "action:delete|identifier:${identifier}" ${SKNLIB_DIR}/xslt/srw-update.xsl ${updateXml}
+   # not using urlRetrieve, doesn't support POST data
+   curl --silent -o ${curlResult} --data-binary "@${updateXml}" ${endpoint}
+   rm ${updateXml}
+   srusrwUpdateResponseCheck ${curlResult} ${identifier} "deleted"
+}
+
+#****f* srusrw/responseCheck
+# DESCRIPTION
+#  Checks the response provided by and SRU Record Update.
+#  if there is a diagnostic uri, it failed, else, it's
+#  a succesful update.
+#***
+function srusrwUpdateResponseCheck {
+   requiredArgs $# 3 $FUNCNAME
+   local responseXml=${1}
+   local identifier=${2}
+   local successMsg=${3}
+
+   if [ ! -z $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-uri" ${responseXml}) ]; then
+      msgError "${identifier}: $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-msg" ${responseXml})"
+      msgError "$(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-details" ${responseXml})"
+   else
+      msgOk "${identifier} ${successMsg}"
+   fi
+   rm ${responseXml}
 }
