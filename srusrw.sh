@@ -59,7 +59,7 @@ function srusrwGetRecords {
 
    for identifier in $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:identifiers" ${result}); do
       filename=$(echo ${identifier} | sed s/\\//:/g)
-      xslTranslate ${SKNLIB_DIR}/xslt/srw-to-xml.xsl "data:recorddata|identifier:${identifier}" ${result} "${destDir}/${filename}.xml"
+      xslTranslate ${SKNLIB_DIR}/xslt/srw-to-xml.xsl "data:recorddata|identifier:${identifier}" ${result} "${destDir}/${filename}"
       checkTrue ${relevancy} && sleep 1
    done
 
@@ -154,3 +154,4 @@ function srusrwUpdateResponseCheck {
    fi
    rm ${responseXml}
 }
+

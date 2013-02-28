@@ -2,7 +2,7 @@
 <!--
 Edurep LOM to CSV
 extracts values for the provided fields
-in csv format
+in csv format, only for single value fields
 -->
 <xsl:stylesheet version="1.0"
    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 

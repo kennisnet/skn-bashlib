@@ -35,6 +35,10 @@ function xslTranslate {
    requiredVar "${xsl}" "$FUNCNAME: provide an xslt file"
    requiredWrite "${target}" "$FUNCNAME: output file not writable: ${target}"
 
+   if [ "${xml}" != "-" ]; then
+      [ ! -r ${xml} ] && msgError "$FUNCNAME: source not readable: ${xml}" && exit 1
+   fi
+
    # create the stringparams
    if [ ! -z ${params} ]; then
       # parameters should at least include a :
