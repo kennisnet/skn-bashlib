@@ -49,7 +49,9 @@ function smbUpdateResponseCheck {
    local successMsg=${3}
 
    if [ -z $(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:status" ${responseXml}) ]; then
-      msgError "${identifier}: $(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:error-description" ${responseXml})"
+      local code=$(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:error-code" ${responseXml})
+      local description=$(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:error-description" ${responseXml})
+      msgError "${identifier}: ${code} ${description}"
    else
       msgOk "${identifier} ${successMsg}"
    fi
