@@ -24,6 +24,14 @@ in csv format
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/oai_dc:dc/dc:description"/>
       </xsl:if>
+      <xsl:if test="contains($fields,'location')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/oai_dc:dc/dc:identifier"/>
+      </xsl:if>
+      <xsl:if test="contains($fields,'publisher')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/oai_dc:dc/dc:publisher"/>
+      </xsl:if>
       <xsl:text>&#xA;</xsl:text>
     </xsl:template>
 </xsl:stylesheet>
