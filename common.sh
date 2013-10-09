@@ -69,3 +69,20 @@ function setOrDefault {
    [ -z "${var}" ] && var="${default}"
    echo "${var}"
 }
+
+#****f* common/trimVar
+# DESCRIPTION
+#  Trim spaces from a variable. Trims leading and
+#  trailing by default, set an optional l for
+#  leading or r/t for trailing only.
+#***
+function trimVar {
+   local var=${1}
+   local direction=$(setOrDefault "${2}" "b")
+
+   case ${direction} in
+      "b") echo ${var} | sed -e 's/^ *//g' -e 's/ *$//g' ;;
+      "l") echo ${var} | sed 's/^ *//g' ;;
+      "r"|"t") echo ${var} | sed 's/ *$//g' ;;
+   esac
+}
