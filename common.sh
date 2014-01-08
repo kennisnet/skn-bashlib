@@ -44,6 +44,18 @@ function requiredWrite {
    [ ! -w "${file}" ] && msgError "${msg}" && exit 1
 }
 
+#****f* common/requiredRead
+# DESCRIPTION
+#  Shorthand function to check if a file is readable.
+#***
+function requiredRead {
+   local file=${1}
+   local msg=${2}
+
+   [ -z "${msg}" ] && msg="file not readable: ${file}"
+   [ ! -r "${file}" ] && msgError "${msg}" && exit 1
+}
+
 #****f* common/requiredArgs
 # DESCRIPTION
 #  Shorthand function to check if the number of arguments
