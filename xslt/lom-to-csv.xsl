@@ -19,6 +19,15 @@ in csv format, only for single value fields
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/lom:lom/lom:general/lom:title/lom:langstring" />
       </xsl:if>
+      <!-- removing linebreaks for csv use -->
+      <xsl:if test="contains($fields,'description')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="translate(/lom:lom/lom:general/lom:description/lom:langstring, '&#xA;&#xD;', '')" />
+      </xsl:if>
+      <xsl:if test="contains($fields,'aggregationlevel')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/lom:lom/lom:general/lom:aggregationlevel/lom:value/lom:langstring" />
+      </xsl:if>
       <xsl:if test="contains($fields,'location')">
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/lom:lom/lom:technical/lom:location" />
