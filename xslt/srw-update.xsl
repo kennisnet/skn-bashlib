@@ -6,8 +6,8 @@ based on the provided xml.
 <xsl:stylesheet version="1.0"
    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns:srw="http://www.loc.gov/zing/srw/update/"
-   xmlns:ucp="http://www.loc.gov/ucp">
+   xmlns:srw="http://www.loc.gov/zing/srw/"
+   xmlns:ucp="info:lc/xmlns/update-v1">
    <!-- don't use indent, it has been known not to be accepted -->
    <xsl:output method="xml" indent="no"/>
    <!-- set to update or delete -->
