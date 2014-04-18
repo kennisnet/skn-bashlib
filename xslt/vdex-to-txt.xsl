@@ -15,6 +15,12 @@ extracts parts from the VDEX record as text
          <xsl:when test="$data='identifier'">
             <xsl:value-of select="/vdex:vdex/vdex:vocabIdentifier"/>
          </xsl:when>
+         <xsl:when test="$data='termidentifiers'">
+            <xsl:for-each select="/vdex:vdex/vdex:term/vdex:termIdentifier">
+                <xsl:value-of select="."/>
+                <xsl:text>&#xA;</xsl:text>
+            </xsl:for-each>
+         </xsl:when>
       </xsl:choose>
    </xsl:template>
 </xsl:stylesheet>
