@@ -17,8 +17,9 @@ extracts parts from the SRW response as xml
          <xsl:when test="$data='recorddata'">
             <xsl:copy-of select="/srw:searchRetrieveResponse/srw:records/srw:record[srw:recordIdentifier=$identifier]/srw:recordData/node()"/>
          </xsl:when>
+         <!-- make [1] variable later -->
          <xsl:when test="$data='extraresponsedata'">
-            <xsl:copy-of select="/srw:searchRetrieveResponse/srw:extraResponseData/node()"/>
+            <xsl:copy-of select="/srw:searchRetrieveResponse/srw:extraResponseData/*[1]"/>
          </xsl:when>
       </xsl:choose>
    </xsl:template>
