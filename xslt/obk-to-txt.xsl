@@ -9,7 +9,8 @@ http://www.onderwijsbegrippenkader.nl
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:bk="http://purl.edustandaard.nl/begrippenkader/"
-   mlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:skos="http://www.w3.org/2004/02/skos/core#">
    <xsl:output method="text" omit-xml-declaration="yes"/>
    <xsl:param name="data"/>
 
@@ -18,8 +19,17 @@ http://www.onderwijsbegrippenkader.nl
          <xsl:when test="$data='label'">
             <xsl:value-of select="/rdf:RDF/rdf:Description/rdfs:label"/>
          </xsl:when>
+         <xsl:when test="$data='preflabel'">
+            <xsl:value-of select="/rdf:RDF/rdf:Description/skos:prefLabel"/>
+         </xsl:when>         
          <xsl:when test="$data='geldigheid'">
             <xsl:value-of select="/rdf:RDF/rdf:Description/bk:heeftGeldigheidsperiode"/>
+         </xsl:when>
+         <xsl:when test="$data='narrower'">
+            <xsl:for-each select="/rdf:RDF/rdf:Description/skos:narrower/@rdf:resource">
+               <xsl:value-of select="."/>
+               <xsl:text>&#xA;</xsl:text>
+            </xsl:for-each>
          </xsl:when>
       </xsl:choose>
    </xsl:template>
