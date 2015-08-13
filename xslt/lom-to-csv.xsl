@@ -19,6 +19,10 @@ in csv format, only for single value fields
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/lom:lom/lom:general/lom:title/lom:langstring" />
       </xsl:if>
+      <xsl:if test="contains($fields,'uri-catalogentry')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/lom:lom/lom:general/lom:catalogentry[lom:catalog='URI']/lom:entry/lom:langstring" />
+      </xsl:if>
       <!-- removing linebreaks for csv use -->
       <xsl:if test="contains($fields,'description')">
          <xsl:value-of select="$separator"/>
