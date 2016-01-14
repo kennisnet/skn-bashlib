@@ -15,6 +15,12 @@ use for multivalue fields
 
    <xsl:template match="/">
       <xsl:choose>
+         <xsl:when test="$data='uri-catalogentry'">
+            <xsl:for-each select="/lom:lom/lom:general/lom:catalogentry[lom:catalog='URI']/lom:entry/lom:langstring">
+               <xsl:value-of select="." />
+               <xsl:text>&#xA;</xsl:text>
+            </xsl:for-each>
+         </xsl:when>
          <xsl:when test="$data='keywords'">
             <xsl:for-each select="/lom:lom/lom:general/lom:keyword/lom:langstring[@xml:lang=$language]">
                <xsl:value-of select="." />
