@@ -24,6 +24,10 @@ in csv format
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/smo:smo/hreview:hReview/hreview:rating"/>
       </xsl:if>
+      <xsl:if test="contains($fields,'info')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/smo:smo/hreview:hReview/hreview:info"/>
+      </xsl:if>
       <xsl:text>&#xA;</xsl:text>
     </xsl:template>
 </xsl:stylesheet>
