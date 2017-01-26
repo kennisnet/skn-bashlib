@@ -36,6 +36,10 @@ in csv format, only for single value fields
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/lom:lom/lom:technical/lom:location" />
       </xsl:if>
+      <xsl:if test="contains($fields,'format')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/lom:lom/lom:technical/lom:format" />
+      </xsl:if>
       <xsl:text>&#xA;</xsl:text>
     </xsl:template>
 </xsl:stylesheet>
