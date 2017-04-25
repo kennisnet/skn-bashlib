@@ -25,7 +25,22 @@ the value with the provided one
          <xsl:when test="$key='info'">
             <xsl:value-of select="$value"/>
          </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="."/>
+         </xsl:otherwise>
       </xsl:choose>
    </xsl:template>
 
+   <xsl:template match="/smo:smo/smo:userId/text()">
+      <xsl:choose>
+         <xsl:when test="$key='userid'">
+            <xsl:value-of select="$value"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="."/>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+
+ 
 </xsl:stylesheet>
