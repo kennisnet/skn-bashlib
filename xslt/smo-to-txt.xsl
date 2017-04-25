@@ -15,6 +15,10 @@ extracts parts from an SMO record as text lists
 
    <xsl:template match="/">
       <xsl:choose>
+         <xsl:when test="$data='userid'">
+            <xsl:value-of select="/smo:smo/smo:userId/text()" />
+            <xsl:text>&#xA;</xsl:text>
+         </xsl:when>
          <xsl:when test="$data='info'">
             <xsl:value-of select="/smo:smo/hreview:hReview/hreview:info/text()" />
             <xsl:text>&#xA;</xsl:text>
