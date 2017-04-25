@@ -36,6 +36,23 @@ function smbDeleteRecord {
    smbUpdateResponseCheck ${curlResult} ${identifier} "deleted"
 }
 
+#****f* smb/updateRecord
+# DESCRIPTION
+#  Updates the provided smo on the provided endpoint.
+#***
+function smbUpdateRecord {
+   requiredArgs $# 2 $FUNCNAME
+   local record=${1}
+   local endpoint=${2}
+   local updateXml=$(mktemp)
+   local curlResult=$(mktemp)
+   
+   xslTranslate ${SKNLIB_DIR}/xslt/smb-update.xsl "" ${record} ${updateXml}
+   curl --silent -o ${curlResult} --data-binary "@${updateXml}" ${endpoint}
+   rm ${updateXml}
+   smbUpdateResponseCheck ${curlResult} $(basename $record) "updated"
+}
+
 #****f* smb/responseCheck
 # DESCRIPTION
 #  Checks the response provided by an SMB Update.
