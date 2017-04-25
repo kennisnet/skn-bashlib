@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-LOM to TXT
-extracts parts from a LOM record as text lists
-use for multivalue fields
+SMO Replace
+selects an element based on a key and replaces
+the value with the provided one
 -->
 <xsl:stylesheet version="1.0"
    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -22,12 +22,10 @@ use for multivalue fields
 
    <xsl:template match="/smo:smo/hreview:hReview/hreview:info/text()">
       <xsl:choose>
-      <xsl:when test="$key='info'">
-         <xsl:value-of select="$value"/>
-      </xsl:when>
+         <xsl:when test="$key='info'">
+            <xsl:value-of select="$value"/>
+         </xsl:when>
       </xsl:choose>
    </xsl:template>
-
-
 
 </xsl:stylesheet>
