@@ -27,6 +27,10 @@ use for multivalue fields
                <xsl:text>&#xA;</xsl:text>
             </xsl:for-each>
          </xsl:when>
+         <xsl:when test="$data='location'">
+            <xsl:value-of select="/lom:lom/lom:technical/lom:location" />
+            <xsl:text>&#xA;</xsl:text>
+         </xsl:when>
          <xsl:when test="$data='contexts'">
             <xsl:for-each select="/lom:lom/lom:educational/lom:context/lom:value/lom:langstring">
                <xsl:value-of select="." />
