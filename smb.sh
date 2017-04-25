@@ -29,7 +29,7 @@ function smbDeleteRecord {
    local curlResult=$(mktemp)
 
    # call to itself, the delete doen't need an input xml
-   xslTranslate ${SKNLIB_DIR}/xslt/smb-update.xsl "supplierid:${supplierid}|smoid:${identifier}" ${SKNLIB_DIR}/xslt/smb-update.xsl ${updateXml}
+   xslTranslate ${SKNLIB_DIR}/xslt/smb-delete.xsl "supplierid:${supplierid}|smoid:${identifier}" ${SKNLIB_DIR}/xslt/smb-delete.xsl ${updateXml}
    # not using urlRetrieve, doesn't support POST data
    curl --silent -o ${curlResult} --data-binary "@${updateXml}" ${endpoint}
    rm ${updateXml}
