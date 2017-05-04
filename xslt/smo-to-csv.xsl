@@ -20,6 +20,14 @@ in csv format
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/smo:smo/smo:smoId"/>
       </xsl:if>
+     <xsl:if test="contains($fields,'supplierid')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/smo:smo/smo:supplierId"/>
+      </xsl:if>
+     <xsl:if test="contains($fields,'dtreviewed')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/smo:smo/hreview:hReview/hreview:dtreviewed"/>
+      </xsl:if>
       <xsl:if test="contains($fields,'rating')">
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/smo:smo/hreview:hReview/hreview:rating"/>
@@ -27,6 +35,11 @@ in csv format
       <xsl:if test="contains($fields,'info')">
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/smo:smo/hreview:hReview/hreview:info"/>
+      </xsl:if>
+      <xsl:if test="contains($fields,'tag')">
+         <!-- retrieves first tag -->
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/smo:smo/hreview:hReview/hreview:tags/hreview:tag/hreview:name"/>
       </xsl:if>
       <xsl:text>&#xA;</xsl:text>
     </xsl:template>
