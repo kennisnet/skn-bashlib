@@ -20,6 +20,10 @@ in csv format
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/smo:smo/smo:smoId"/>
       </xsl:if>
+      <xsl:if test="contains($fields,'userid')">
+         <xsl:value-of select="$separator"/>
+         <xsl:value-of select="/smo:smo/smo:userId"/>
+      </xsl:if>
      <xsl:if test="contains($fields,'supplierid')">
          <xsl:value-of select="$separator"/>
          <xsl:value-of select="/smo:smo/smo:supplierId"/>
