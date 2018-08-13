@@ -35,7 +35,7 @@ function mailSend {
 
    if [[ ! ${message} =~ ^/|\./(.*) ]]; then
       echo "${message}" | mail -s "${subject}" "${attach}" "${mailto}" 2>&1
-   elif [ ! -r ${message} ]; then
+   elif [ -r ${message} ]; then
       mail -s "$subject" "$mailto" "${attach}" < ${message} 2>&1
    else
       msgError "input file not readable: ${message}" && exit 1
