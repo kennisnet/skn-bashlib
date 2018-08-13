@@ -13,7 +13,7 @@ in csv format
    <xsl:param name="separator" select="';'"/>
 
    <xsl:template match="/">
-      <xsl:for-each select="/dd:drilldown/dd:term-drilldown/dd:navigator[@name=$navigator]/dd:item">
+      <xsl:for-each select="//dd:drilldown/dd:term-drilldown/dd:navigator[@name=$navigator]/dd:item">
          <xsl:value-of select="." />
          <xsl:value-of select="$separator" />
          <xsl:value-of select="@count" />
