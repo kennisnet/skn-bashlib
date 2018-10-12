@@ -23,6 +23,14 @@ extracts parts from an SMO record as text lists
             <xsl:value-of select="/smo:smo/hreview:hReview/hreview:info/text()" />
             <xsl:text>&#xA;</xsl:text>
          </xsl:when>
+         <xsl:when test="$data='summary'">
+            <xsl:value-of select="/smo:smo/hreview:hReview/hreview:summary/text()" />
+            <xsl:text>&#xA;</xsl:text>
+         </xsl:when>
+         <xsl:when test="$data='description'">
+            <xsl:value-of select="/smo:smo/hreview:hReview/hreview:description/text()" />
+            <xsl:text>&#xA;</xsl:text>
+         </xsl:when>
       </xsl:choose>
     </xsl:template>
 </xsl:stylesheet>
