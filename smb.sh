@@ -58,6 +58,8 @@ function smbUpdateRecord {
 #  Checks the response provided by an SMB Update.
 #  if there the status is not ok, it failed, else, it's
 #  a succesful update.
+#  When failing, the identifier is output to stderr so
+#  it can be captured separately.
 #***
 function smbUpdateResponseCheck {
    requiredArgs $# 3 $FUNCNAME
@@ -65,10 +67,15 @@ function smbUpdateResponseCheck {
    local identifier=${2}
    local successMsg=${3}
 
-   if [ -z $(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:status" ${responseXml}) ]; then
-      local code=$(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:error-code" ${responseXml})
-      local description=$(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:error-description" ${responseXml})
-      msgError "${identifier}: ${code} ${description}"
+   if [ -z $(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:status" ${responseXml} 2>/dev/null) ]; then
+      >&2 echo ${identifier}
+      if ! checkValidXml ${1}; then
+         msgError "${identifier}: empty response"
+      else
+         local code=$(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:error-code" ${responseXml})
+         local description=$(xslTranslate ${SKNLIB_DIR}/xslt/smb-to-txt.xsl "data:error-description" ${responseXml})
+         msgError "${identifier}: ${code} ${description}"
+      fi
    else
       msgOk "${identifier} ${successMsg}"
    fi

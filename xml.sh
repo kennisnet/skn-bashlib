@@ -57,3 +57,14 @@ function xslTranslate {
 
    xsltproc ${strParams} -o "${target}" "${xsl}" "${xml}"
 }
+
+#****f* xml/checkValidXml
+# DESCRIPTION
+#  Checks if provided xml record is a valid xml document.
+#***
+function checkValidXml {
+   requiredArgs $# 1 $FUNCNAME
+   local xml=${1}
+   xmllint --noout ${xml} &>/dev/null
+   return $?      
+}

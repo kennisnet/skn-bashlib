@@ -130,7 +130,6 @@ function srusrwDeleteRecord {
    xslTranslate ${SKNLIB_DIR}/xslt/srw-update.xsl "action:delete|identifier:${identifier}" ${SKNLIB_DIR}/xslt/srw-update.xsl ${updateXml}
    # not using urlRetrieve, doesn't support POST data
    curl --silent -o ${curlResult} --data-binary "@${updateXml}" ${endpoint}
-   rm ${updateXml}
    srusrwUpdateResponseCheck ${curlResult} ${identifier} "deleted"
 }
 
@@ -139,6 +138,8 @@ function srusrwDeleteRecord {
 #  Checks the response provided by and SRU Record Update.
 #  if there is a diagnostic uri, it failed, else, it's
 #  a succesful update.
+#  When failing, the identifier is output to stderr so
+#  it can be captured separately.
 #***
 function srusrwUpdateResponseCheck {
    requiredArgs $# 3 $FUNCNAME
@@ -147,8 +148,13 @@ function srusrwUpdateResponseCheck {
    local successMsg=${3}
 
    if [ ! -z $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-uri" ${responseXml}) ]; then
-      msgError "${identifier}: $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-msg" ${responseXml})"
-      msgError "$(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-details" ${responseXml})"
+      >&2 echo ${identifier}
+      if ! checkValidXml ${1}; then
+         msgError "${identifier}: empty response"
+      else
+         msgError "${identifier}: $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-msg" ${responseXml})"
+         msgError "$(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-details" ${responseXml})"
+      fi
    else
       msgOk "${identifier} ${successMsg}"
    fi
