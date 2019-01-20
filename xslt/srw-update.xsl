@@ -14,7 +14,7 @@ based on the provided xml.
    <xsl:param name="action"/>
    <xsl:param name="identifier"/>
    <xsl:param name="recordpacking" select="'xml'"/>
-   <xsl:param name="recordschema" select="'ignored'"/>
+   <xsl:param name="recordschema" select="''"/>
 
    <xsl:template match="/">
       <xsl:element name="srw:updateRequest">
@@ -36,9 +36,11 @@ based on the provided xml.
             <xsl:element name="srw:recordPacking">
                <xsl:value-of select="$recordpacking"/>
             </xsl:element>
-            <xsl:element name="srw:recordSchema">
-               <xsl:value-of select="$recordschema"/>
-            </xsl:element>
+            <xsl:if test="$recordschema!=''">
+                <xsl:element name="srw:recordSchema">
+                   <xsl:value-of select="$recordschema"/>
+                </xsl:element>
+            </xsl:if>
             <xsl:element name="srw:recordData">
                <xsl:if test="$action='update'">
                   <xsl:apply-templates/>
