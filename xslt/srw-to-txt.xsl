@@ -7,6 +7,7 @@ extracts parts from the SRW response as text
    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xmlns:srw="http://www.loc.gov/zing/srw/"
+   xmlns:ucp="info:lc/xmlns/update-v1"
    xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/">
    <xsl:output method="text" omit-xml-declaration="yes"/>
    <xsl:param name="data"/>
@@ -38,6 +39,9 @@ extracts parts from the SRW response as text
          </xsl:when>
          <xsl:when test="$data='diagnostic-details'">
             <xsl:value-of select="//diag:diagnostic/diag:details"/>
+         </xsl:when>
+         <xsl:when test="$data='operation-status'">
+            <xsl:value-of select="//srw:updateResponse/ucp:operationStatus"/>
          </xsl:when>
       </xsl:choose>
    </xsl:template>

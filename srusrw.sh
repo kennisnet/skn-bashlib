@@ -147,17 +147,22 @@ function srusrwUpdateResponseCheck {
    local identifier=${2}
    local successMsg=${3}
 
-   if [ ! -z $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-uri" ${responseXml}) ]; then
+   if [[ "$(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:operation-status" ${responseXml} 2>/dev/null)" == "success" ]]; then
+      msgOk "${identifier} ${successMsg}"
+   else
       >&2 echo ${identifier}
-      if ! checkValidXml ${1}; then
-         msgError "${identifier}: empty response"
+      if [ -z $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-uri" ${responseXml} 2>/dev/null) ]; then
+         if ! checkValidXml ${1}; then
+            msgError "${identifier}: invalid xml"
+         else
+            msgError "${identifier}: non-sru valid xml, access?"
+         fi
       else
          msgError "${identifier}: $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-msg" ${responseXml})"
          msgError "$(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-details" ${responseXml})"
       fi
-   else
-      msgOk "${identifier} ${successMsg}"
    fi
+
    rm ${responseXml}
 }
 
