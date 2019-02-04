@@ -96,13 +96,14 @@ function srusrwHarvestData {
 #****f* srusrw/updateRecord
 # DESCRIPTION
 #  Updates the provided record from the
-#  endpoint.
+#  endpoint. Makes sure any %2F's in the filename
+#  are translated to /'s. 
 #***
 function srusrwUpdateRecord {
    requiredArgs $# 4 $FUNCNAME
    local record=${1}
    local endpoint=${2}
-   local identifier=${3}
+   local identifier=$(echo ${3} | sed 's/%2F/\//g')
    local recordSchema=${4}
    local updateXml=$(mktemp)
    local curlResult=$(mktemp)
@@ -122,7 +123,7 @@ function srusrwUpdateRecord {
 function srusrwDeleteRecord {
    requiredArgs $# 2 $FUNCNAME
    local endpoint=${1}
-   local identifier=${2}
+   local identifier=$(${2} | sed 's/%2F/\//g')
    local updateXml=$(mktemp)
    local curlResult=$(mktemp)
 
@@ -150,7 +151,9 @@ function srusrwUpdateResponseCheck {
    if [[ "$(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:operation-status" ${responseXml} 2>/dev/null)" == "success" ]]; then
       msgOk "${identifier} ${successMsg}"
    else
-      >&2 echo ${identifier}
+      # translate any /'s back to %2F notation,
+      # so we can do a file lookup based on failed requests
+      >&2 echo ${identifier} | sed 's/\//%2F/g'
       if [ -z $(xslTranslate ${SKNLIB_DIR}/xslt/srw-to-txt.xsl "data:diagnostic-uri" ${responseXml} 2>/dev/null) ]; then
          if ! checkValidXml ${1}; then
             msgError "${identifier}: invalid xml"
