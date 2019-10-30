@@ -123,7 +123,7 @@ function srusrwUpdateRecord {
 function srusrwDeleteRecord {
    requiredArgs $# 2 $FUNCNAME
    local endpoint=${1}
-   local identifier=$(${2} | sed 's/%2F/\//g')
+   local identifier=$(echo ${2} | sed 's/%2F/\//g')
    local updateXml=$(mktemp)
    local curlResult=$(mktemp)
 
@@ -131,6 +131,7 @@ function srusrwDeleteRecord {
    xslTranslate ${SKNLIB_DIR}/xslt/srw-update.xsl "action:delete|identifier:${identifier}" ${SKNLIB_DIR}/xslt/srw-update.xsl ${updateXml}
    # not using urlRetrieve, doesn't support POST data
    curl --silent -o ${curlResult} --data-binary "@${updateXml}" ${endpoint}
+   rm ${updateXml}
    srusrwUpdateResponseCheck ${curlResult} ${identifier} "deleted"
 }
 
